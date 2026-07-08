@@ -1,0 +1,110 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --dark: #14141f;
+  --dark-2: #1c1c2e;
+  --dark-3: #0d0d1a;
+  --yellow: #fac61f;
+  --blue: #5ecae7;
+  --green: #73c37c;
+  --gray: #848484;
+  --light: #f0f0f0;
+  --white: #ffffff;
+
+  --fsz-s: clamp(0.9rem, 1.3vw, 2rem);
+  --fsz-m: clamp(1.3rem, 1.6vw, 3rem);
+  --fsz-l: clamp(1.8rem, 2.2vw, 4rem);
+  --fsz-xl: clamp(2.5rem, 3.9vw, 5rem);
+}
+
+html, body {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background: var(--dark);
+  color: var(--light);
+  font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.slide {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 52px 80px 80px;
+  position: relative;
+  overflow: hidden;
+  animation: fadeUp 0.32s ease both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.slide-heading {
+font-size: var(--fsz-xl);  font-weight: 700;
+  color: var(--light);
+  line-height: 1.15;
+}
+
+.slide-heading .accent { color: var(--yellow); }
+
+.heading-bar {
+  width: 52px;
+  height: 4px;
+  background: var(--yellow);
+  border-radius: 2px;
+  margin: 10px 0 32px;
+}
+
+code, pre {
+  font-family: 'Fira Code', 'Cascadia Code', 'JetBrains Mono', 'Consolas', monospace;
+}
+
+.code-block {
+  background: var(--dark-3);
+  border-left: 4px solid var(--yellow);
+  border-radius: 8px;
+  padding: 20px 26px;
+  line-height: 1.8;
+  font-size: var(--fsz-s);
+  overflow-x: auto;
+}
+
+.code-block .kw   { color: #c792ea; }
+.code-block .fn   { color: #82aaff; }
+.code-block .str  { color: #c3e88d; }
+.code-block .num  { color: #f78c6c; }
+.code-block .cmt  { color: #546e7a; font-style: italic; }
+.code-block .op   { color: var(--yellow); }
+.code-block .prop { color: var(--blue); }
+.code-block .cls  { color: var(--green); }
+
+.tag-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(250, 198, 31, 0.12);
+  border: 1px solid rgba(250, 198, 31, 0.3);
+  color: var(--yellow);
+  font-size: var(--fsz-m);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+.applifting-logo {
+font-size: var(--fsz-m);  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--yellow);
+  opacity: 0.85;
+}

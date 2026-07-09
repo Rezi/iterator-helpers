@@ -1,101 +1,81 @@
 <script lang="ts">
-	const rows = [
+	const methods = [
 		{
-			dim: 'Evaluation',
-			arrayVal: 'Eager — runs immediately',
-			iterVal: 'Lazy — runs on demand',
-			arrayBad: true
+			name: '.map(fn)',
+			desc: 'Transform each element',
+			example: '.map(x => x * 2)',
+			color: '#fac61f'
 		},
 		{
-			dim: 'Intermediate arrays',
-			arrayVal: 'Created at every step',
-			iterVal: 'None — elements flow through',
-			arrayBad: true
+			name: '.filter(fn)',
+			desc: 'Keep elements that match',
+			example: '.filter(x => x > 0)',
+			color: '#5ecae7'
 		},
 		{
-			dim: 'Early termination',
-			arrayVal: 'No — always processes all',
-			iterVal: 'Yes — stop anytime',
-			arrayBad: true
+			name: '.take(n)',
+			desc: 'Yield first n elements, then stop',
+			example: '.take(3)',
+			color: '#73c37c'
+		},
+		{ name: '.drop(n)', desc: 'Skip first n elements', example: '.drop(10)', color: '#c792ea' },
+		{
+			name: '.flatMap(fn)',
+			desc: 'Map then flatten iterables',
+			example: '.flatMap(x => [x, x])',
+			color: '#f78c6c'
 		},
 		{
-			dim: 'Infinite sequences',
-			arrayVal: 'Not possible',
-			iterVal: 'Native support',
-			arrayBad: true
+			name: '.reduce(fn, acc)',
+			desc: 'Aggregate into a single value',
+			example: '.reduce((a,b) => a+b, 0)',
+			color: '#fac61f'
 		},
 		{
-			dim: 'Memory usage',
-			arrayVal: 'Proportional to array size',
-			iterVal: 'Constant (O(1))',
-			arrayBad: true
+			name: '.some(fn)',
+			desc: 'True if any element matches',
+			example: '.some(x => x < 0)',
+			color: '#5ecae7'
 		},
 		{
-			dim: 'Random access',
-			arrayVal: 'Yes — arr[i] any time',
-			iterVal: 'No — forward only',
-			arrayBad: false
+			name: '.every(fn)',
+			desc: 'True if all elements match',
+			example: '.every(x => x > 0)',
+			color: '#73c37c'
 		},
 		{
-			dim: 'Re-usability',
-			arrayVal: 'Can be iterated many times',
-			iterVal: 'Single-pass only',
-			arrayBad: false
+			name: '.find(fn)',
+			desc: 'Return first matching element',
+			example: '.find(x => x > 5)',
+			color: '#c792ea'
 		},
 		{
-			dim: 'Browser support',
-			arrayVal: 'Universal',
-			iterVal: 'Node 22+ / modern browsers',
-			arrayBad: false
+			name: '.forEach(fn)',
+			desc: 'Run a function for each element',
+			example: '.forEach(x => log(x))',
+			color: '#f78c6c'
+		},
+		{
+			name: '.toArray()',
+			desc: 'Collect all values into an array',
+			example: '.toArray()',
+			color: '#fac61f'
 		}
 	];
 </script>
 
 <div class="slide slide-7">
-	<div class="slide-heading">Array Methods <span class="accent">vs</span> Iterator Helpers</div>
+	<div class="slide-heading">Iterator Helper <span class="accent">Methods</span></div>
 	<div class="heading-bar"></div>
 
-	<div class="body">
-		<div class="comparison-table">
-			<!-- Header -->
-			<div class="col-header left-header">
-				<span class="header-icon">📋</span>
-				<span>Array Methods</span>
+	<div class="methods-grid">
+		{#each methods as m}
+			<div class="method-card" style="--accent-color: {m.color}">
+				<div class="method-name"><code>{m.name}</code></div>
+				<div class="method-desc">{m.desc}</div>
+				<div class="method-example"><code>{m.example}</code></div>
 			</div>
-			<div class="col-header center-header">Dimension</div>
-			<div class="col-header right-header">
-				<span class="header-icon">⚡</span>
-				<span>Iterator Helpers</span>
-			</div>
-
-			{#each rows as row}
-				<div class="cell left-cell" class:cell-bad={row.arrayBad}>
-					{row.arrayVal}
-					{#if row.arrayBad}
-						<span class="cell-icon bad">✗</span>
-					{:else}
-						<span class="cell-icon ok">✓</span>
-					{/if}
-				</div>
-				<div class="cell dim-cell">{row.dim}</div>
-				<div class="cell right-cell" class:cell-good={!row.arrayBad}>
-					{#if !row.arrayBad}
-						<span class="cell-icon ok">✓</span>
-					{:else}
-						<span class="cell-icon ok">✓</span>
-					{/if}
-					{row.iterVal}
-				</div>
-			{/each}
-		</div>
-
-		<div class="takeaway">
-			<span class="takeaway-icon">💡</span>
-			<p>
-				Iterator helpers don't replace arrays — they <strong>extend</strong> how you work with sequences.
-				Use them when laziness, memory, or early termination matter.
-			</p>
-		</div>
+		{/each}
 	</div>
 </div>
 
@@ -104,143 +84,56 @@
 		background: var(--dark);
 	}
 
-	.body {
+	.methods-grid {
 		flex: 1;
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		grid-template-rows: repeat(4, 1fr);
+		gap: 10px;
+	}
+
+	.method-card {
+		background: rgba(255, 255, 255, 0.025);
+		border: 1px solid rgba(255, 255, 255, 0.06);
+		border-top: 2px solid var(--accent-color);
+		border-radius: 10px;
+		padding: 14px 14px 12px;
 		display: flex;
 		flex-direction: column;
-		gap: 20px;
+		gap: 6px;
+		transition:
+			background 0.15s,
+			border-color 0.15s;
 	}
 
-	.comparison-table {
-		display: grid;
-		grid-template-columns: 1fr 180px 1fr;
-		gap: 0;
-		border-radius: 12px;
-		overflow: hidden;
-		border: 1px solid rgba(255, 255, 255, 0.07);
+	.method-card:hover {
+		background: rgba(255, 255, 255, 0.045);
+	}
+
+	.method-name code {
+		font-size: var(--fsz-m);
+		font-weight: 700;
+		color: var(--accent-color);
+		font-family: 'Fira Code', 'Cascadia Code', monospace;
+	}
+
+	.method-desc {
+		font-size: var(--fsz-m);
+		color: #b0b0c0;
+		line-height: 1.45;
 		flex: 1;
 	}
 
-	.col-header {
-		padding: 12px 20px;
-		font-size: var(--fsz-s);
-		font-weight: 700;
-		letter-spacing: 0.07em;
-		text-transform: uppercase;
-		display: flex;
-		align-items: center;
-		gap: 8px;
-	}
-
-	.left-header {
-		background: rgba(255, 107, 107, 0.08);
-		color: #ff9090;
-		border-bottom: 1px solid rgba(255, 107, 107, 0.15);
-	}
-
-	.center-header {
-		background: rgba(255, 255, 255, 0.03);
-		color: var(--gray);
-		text-align: center;
-		justify-content: center;
-		border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-		border-left: 1px solid rgba(255, 255, 255, 0.06);
-		border-right: 1px solid rgba(255, 255, 255, 0.06);
-	}
-
-	.right-header {
-		background: rgba(250, 198, 31, 0.08);
-		color: var(--yellow);
-		border-bottom: 1px solid rgba(250, 198, 31, 0.15);
-	}
-
-	.header-icon {
+	.method-example code {
 		font-size: var(--fsz-m);
-	}
-
-	.cell {
-		padding: 9px 20px;
-		font-size: var(--fsz-s);
-		display: flex;
-		align-items: center;
-		gap: 8px;
-		color: #c0c0d0;
-		border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-	}
-
-	.cell:last-child,
-	.cell:nth-last-child(2),
-	.cell:nth-last-child(3) {
-		border-bottom: none;
-	}
-
-	.left-cell {
-		background: rgba(255, 107, 107, 0.03);
-		justify-content: flex-end;
-	}
-
-	.left-cell.cell-bad {
-		color: #c0a0a0;
-	}
-
-	.dim-cell {
-		background: rgba(255, 255, 255, 0.02);
-		color: var(--gray);
-		font-size: var(--fsz-s);
-		font-weight: 600;
-		text-transform: uppercase;
-		letter-spacing: 0.06em;
-		justify-content: center;
-		text-align: center;
-		border-left: 1px solid rgba(255, 255, 255, 0.04);
-		border-right: 1px solid rgba(255, 255, 255, 0.04);
-	}
-
-	.right-cell {
-		background: rgba(250, 198, 31, 0.03);
-	}
-
-	.right-cell.cell-good {
-		color: #c0d0b0;
-	}
-
-	.cell-icon {
-		font-size: var(--fsz-s);
-		flex-shrink: 0;
-	}
-
-	.cell-icon.bad {
-		color: #ff6b6b;
-		opacity: 0.7;
-	}
-
-	.cell-icon.ok {
-		color: var(--green);
-		opacity: 0.8;
-	}
-
-	.takeaway {
-		display: flex;
-		align-items: flex-start;
-		gap: 14px;
-		background: rgba(250, 198, 31, 0.06);
-		border: 1px solid rgba(250, 198, 31, 0.2);
-		border-radius: 10px;
-		padding: 14px 18px;
-	}
-
-	.takeaway-icon {
-		font-size: var(--fsz-m);
-		flex-shrink: 0;
-	}
-
-	.takeaway p {
-		font-size: var(--fsz-s);
-		color: #b0b0c0;
-		line-height: 1.6;
-	}
-
-	.takeaway strong {
-		color: var(--yellow);
+		color: #546e7a;
+		font-family: 'Fira Code', 'Cascadia Code', monospace;
+		background: rgba(255, 255, 255, 0.04);
+		padding: 2px 6px;
+		border-radius: 4px;
+		display: block;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 </style>

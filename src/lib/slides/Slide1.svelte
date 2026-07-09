@@ -111,7 +111,7 @@
 		display: flex;
 		align-items: center;
 		gap: 12px;
-		font-size: 1.5rem;
+		font-size: var(--fsz-lg);
 		color: #848484;
 	}
 

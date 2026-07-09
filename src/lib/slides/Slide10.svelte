@@ -1,215 +1,234 @@
+<script lang="ts">
+	const useWhen = [
+		{
+			title: 'Large or infinite datasets',
+			desc: 'When loading everything into memory is expensive or impossible.'
+		},
+		{
+			title: 'Early termination matters',
+			desc: 'You only need the first N results that satisfy a condition.'
+		},
+		{
+			title: 'Chained transformations',
+			desc: 'Multiple map/filter steps — no intermediate arrays needed.'
+		},
+		{
+			title: 'Streaming or real-time data',
+			desc: 'Generators feeding data as it arrives from a network or sensor.'
+		},
+		{
+			title: 'Memory-sensitive environments',
+			desc: 'Edge functions, embedded contexts, or large data pipelines.'
+		}
+	];
+
+	const stickWith = [
+		{
+			title: 'Small, known-size arrays',
+			desc: 'Overhead of iterator protocol outweighs laziness for tiny data.'
+		},
+		{
+			title: 'Random access needed',
+			desc: 'Array indexing (arr[i]) is not possible with iterators.'
+		},
+		{
+			title: 'Multiple passes required',
+			desc: 'Iterators are single-pass; arrays can be re-iterated freely.'
+		},
+		{
+			title: 'Older environment support',
+			desc: 'Requires Node 22+ / modern browsers; polyfills add complexity.'
+		},
+		{
+			title: 'Team unfamiliar with iterators',
+			desc: 'Array methods are more widely understood — readability wins.'
+		}
+	];
+</script>
+
 <div class="slide slide-10">
-	<div class="bg-glow" aria-hidden="true"></div>
-	<div class="bg-grid" aria-hidden="true"></div>
+	<div class="slide-heading">When to <span class="accent">Use</span> Them</div>
+	<div class="heading-bar"></div>
 
-	<div class="content">
-		<!-- Cherry illustration -->
-		<div class="cherry-decoration" aria-hidden="true">
-			<svg viewBox="0 0 180 100" width="180" height="100">
-				<path
-					d="M60,55 Q52,30 72,18"
-					stroke="#2d6a27"
-					stroke-width="3"
-					fill="none"
-					stroke-linecap="round"
-				/>
-				<path
-					d="M90,48 Q95,22 85,10"
-					stroke="#2d6a27"
-					stroke-width="3"
-					fill="none"
-					stroke-linecap="round"
-				/>
-				<path d="M75,30 Q85,10 100,18 Q88,30 75,30" fill="#3a8030" />
-				<circle cx="60" cy="68" r="18" fill="#CC1111" />
-				<circle cx="55" cy="63" r="4.5" fill="rgba(255,255,255,0.2)" />
-				<circle cx="90" cy="63" r="17" fill="#CC1111" />
-				<circle cx="85" cy="58" r="4" fill="rgba(255,255,255,0.2)" />
-				<path
-					d="M118,52 Q128,25 118,12"
-					stroke="#2d6a27"
-					stroke-width="2.5"
-					fill="none"
-					stroke-linecap="round"
-				/>
-				<circle cx="118" cy="65" r="15" fill="#CC1111" />
-				<circle cx="113" cy="61" r="3.5" fill="rgba(255,255,255,0.18)" />
-				<text
-					x="55"
-					y="100"
-					fill="#73c37c"
-					font-size="14"
-					font-family="Inter, sans-serif"
-					font-weight="700"
-					text-anchor="middle">✓</text
-				>
-				<text
-					x="90"
-					y="100"
-					fill="#73c37c"
-					font-size="14"
-					font-family="Inter, sans-serif"
-					font-weight="700"
-					text-anchor="middle">✓</text
-				>
-				<text
-					x="118"
-					y="100"
-					fill="#73c37c"
-					font-size="14"
-					font-family="Inter, sans-serif"
-					font-weight="700"
-					text-anchor="middle">✓</text
-				>
-			</svg>
+	<div class="body">
+		<div class="column use-col">
+			<div class="col-title">
+				<span class="col-icon">⚡</span>
+				<span>Reach for Iterator Helpers when…</span>
+			</div>
+			{#each useWhen as item}
+				<div class="item use-item">
+					<span class="item-icon">✓</span>
+					<div>
+						<div class="item-title">{item.title}</div>
+						<div class="item-desc">{item.desc}</div>
+					</div>
+				</div>
+			{/each}
 		</div>
 
-		<h1 class="thanks">Thank You!</h1>
-		<p class="tagline">Just 3 good things to remember</p>
-
-		<div class="takeaways">
-			<div class="takeaway">
-				<span class="takeaway-icon">💤</span>
-				<span><strong>Lazy</strong> — runs only when consumed</span>
-			</div>
-			<div class="takeaway">
-				<span class="takeaway-icon">🛑</span>
-				<span><strong>Stops early</strong> — no wasted work</span>
-			</div>
-			<div class="takeaway">
-				<span class="takeaway-icon">♾️</span>
-				<span><strong>Infinite</strong> — works with endless sequences</span>
-			</div>
+		<div class="divider-col" aria-hidden="true">
+			<div class="vline"></div>
+			<div class="vs-circle">vs</div>
+			<div class="vline"></div>
 		</div>
 
-		<div class="divider"></div>
-
-		<div class="presenter-block">
-			<div class="presenter-name">Tomas Rezac</div>
-			<div class="presenter-org">
-				<span class="applifting-logo">⚡ Applifting</span>
-				<span class="presenter-tagline">Lifting your ideas into digital orbit</span>
+		<div class="column array-col">
+			<div class="col-title">
+				<span class="col-icon">📋</span>
+				<span>Stick with Array methods when…</span>
 			</div>
+			{#each stickWith as item}
+				<div class="item array-item">
+					<span class="item-icon arr-icon">→</span>
+					<div>
+						<div class="item-title">{item.title}</div>
+						<div class="item-desc">{item.desc}</div>
+					</div>
+				</div>
+			{/each}
 		</div>
+	</div>
+
+	<div class="bottom-rule">
+		<span class="rule-icon">🍒</span>
+		<em
+			>Rule of thumb: if you'd stop checking cherries the moment you have enough good ones — use
+			iterator helpers.</em
+		>
 	</div>
 </div>
 
 <style>
 	.slide-10 {
-		background: radial-gradient(ellipse 70% 60% at 40% 50%, #1a1428 0%, #14141f 100%);
-		justify-content: center;
-		align-items: center;
+		background: var(--dark);
 	}
 
-	.bg-glow {
-		position: absolute;
-		left: -120px;
-		bottom: -120px;
-		width: 500px;
-		height: 500px;
-		background: radial-gradient(circle, rgba(250, 198, 31, 0.06) 0%, transparent 70%);
-		pointer-events: none;
+	.body {
+		flex: 1;
+		display: grid;
+		grid-template-columns: 1fr 52px 1fr;
+		gap: 0;
+		align-items: start;
 	}
 
-	.bg-grid {
-		position: absolute;
-		inset: 0;
-		background-image:
-			linear-gradient(rgba(250, 198, 31, 0.03) 1px, transparent 1px),
-			linear-gradient(90deg, rgba(250, 198, 31, 0.03) 1px, transparent 1px);
-		background-size: 52px 52px;
-		pointer-events: none;
-	}
-
-	.content {
-		position: relative;
-		z-index: 1;
+	.column {
 		display: flex;
 		flex-direction: column;
-		align-items: center;
-		gap: 20px;
-		text-align: center;
+		gap: 10px;
+		padding: 0 8px;
 	}
 
-	.cherry-decoration {
-		filter: drop-shadow(0 6px 24px rgba(204, 17, 17, 0.3));
-	}
-
-	.thanks {
-		font-size: clamp(3.5rem, 7vw, 5.5rem);
-		font-weight: 900;
-		color: var(--yellow);
-		text-shadow: 0 0 60px rgba(250, 198, 31, 0.25);
-		line-height: 1;
-	}
-
-	.tagline {
-		font-size: var(--fsz-m);
-		color: var(--gray);
-		font-style: italic;
-	}
-
-	.takeaways {
-		display: flex;
-		gap: 24px;
-	}
-
-	.takeaway {
+	.col-title {
 		display: flex;
 		align-items: center;
-		gap: 8px;
-		background: rgba(255, 255, 255, 0.04);
-		border: 1px solid rgba(255, 255, 255, 0.08);
-		border-radius: 8px;
-		padding: 10px 16px;
+		gap: 10px;
 		font-size: var(--fsz-s);
-		color: #c0c0d0;
+		font-weight: 700;
+		margin-bottom: 6px;
+		padding-bottom: 12px;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.07);
 	}
 
-	.takeaway strong {
+	.use-col .col-title {
 		color: var(--yellow);
 	}
+	.array-col .col-title {
+		color: #b0b0c0;
+	}
 
-	.takeaway-icon {
+	.col-icon {
 		font-size: var(--fsz-m);
 	}
 
-	.divider {
-		width: 280px;
-		height: 1px;
-		background: linear-gradient(90deg, transparent, rgba(250, 198, 31, 0.4), transparent);
-	}
-
-	.presenter-block {
+	.item {
 		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 8px;
+		align-items: flex-start;
+		gap: 12px;
+		padding: 10px 14px;
+		border-radius: 9px;
 	}
 
-	.presenter-name {
-		font-size: var(--fsz-m);
+	.use-item {
+		background: rgba(250, 198, 31, 0.05);
+		border: 1px solid rgba(250, 198, 31, 0.12);
+	}
+
+	.array-item {
+		background: rgba(255, 255, 255, 0.03);
+		border: 1px solid rgba(255, 255, 255, 0.06);
+	}
+
+	.item-icon {
+		font-size: var(--fsz-s);
+		font-weight: 800;
+		color: var(--yellow);
+		flex-shrink: 0;
+		margin-top: 1px;
+		line-height: 1.4;
+	}
+
+	.arr-icon {
+		color: var(--gray);
+	}
+
+	.item-title {
+		font-size: var(--fsz-s);
 		font-weight: 700;
 		color: var(--light);
+		margin-bottom: 2px;
 	}
 
-	.presenter-org {
+	.item-desc {
+		font-size: var(--fsz-s);
+		color: #848484;
+		line-height: 1.45;
+	}
+
+	.divider-col {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0;
+		padding-top: 40px;
+	}
+
+	.vline {
+		width: 1px;
+		flex: 1;
+		background: rgba(255, 255, 255, 0.08);
+	}
+
+	.vs-circle {
+		width: 32px;
+		height: 32px;
+		border-radius: 50%;
+		border: 1px solid rgba(255, 255, 255, 0.1);
+		background: rgba(255, 255, 255, 0.04);
+		color: var(--gray);
+		font-size: var(--fsz-s);
+		font-weight: 700;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-shrink: 0;
+	}
+
+	.bottom-rule {
 		display: flex;
 		align-items: center;
 		gap: 12px;
-	}
-
-	.applifting-logo {
 		font-size: var(--fsz-s);
-		font-weight: 800;
-		letter-spacing: 0.08em;
-		text-transform: uppercase;
-		color: var(--yellow);
-	}
-
-	.presenter-tagline {
-		font-size: var(--fsz-s);
-		color: var(--gray);
+		color: #848484;
 		font-style: italic;
+		margin-top: 8px;
+		padding-top: 14px;
+		margin-bottom: 1rem;
+		border-top: 1px solid rgba(255, 255, 255, 0.06);
+	}
+
+	.rule-icon {
+		font-size: var(--fsz-m);
+		flex-shrink: 0;
 	}
 </style>

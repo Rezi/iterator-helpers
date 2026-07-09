@@ -5,7 +5,7 @@
 
 	let { children } = $props();
 
-	const TOTAL = 10;
+	const TOTAL = 11;
 	const current = $derived(parseInt((page.params as { slide?: string }).slide ?? '0'));
 
 	function prev() {

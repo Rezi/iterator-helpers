@@ -10,8 +10,21 @@
 	import Slide8 from '$lib/slides/Slide8.svelte';
 	import Slide9 from '$lib/slides/Slide9.svelte';
 	import Slide10 from '$lib/slides/Slide10.svelte';
+	import Slide11 from '$lib/slides/Slide11.svelte';
 
-	const slides = [Slide1, Slide2, Slide3, Slide4, Slide5, Slide6, Slide7, Slide8, Slide9, Slide10];
+	const slides = [
+		Slide1,
+		Slide2,
+		Slide3,
+		Slide4,
+		Slide5,
+		Slide6,
+		Slide7,
+		Slide8,
+		Slide9,
+		Slide10,
+		Slide11
+	];
 
 	const idx = $derived(parseInt((page.params as { slide: string }).slide) - 1);
 	const SlideComponent = $derived(slides[Math.max(0, Math.min(idx, slides.length - 1))]);

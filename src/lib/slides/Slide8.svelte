@@ -1,86 +1,100 @@
+<script lang="ts">
+	const rows = [
+		{
+			dim: 'Evaluation',
+			arrayVal: 'Eager — runs immediately',
+			iterVal: 'Lazy — runs on demand',
+			arrayBad: true
+		},
+		{
+			dim: 'Intermediate arrays',
+			arrayVal: 'Created at every step',
+			iterVal: 'None — elements flow through',
+			arrayBad: true
+		},
+		{
+			dim: 'Early termination',
+			arrayVal: 'No — always processes all',
+			iterVal: 'Yes — stop anytime',
+			arrayBad: true
+		},
+		{
+			dim: 'Infinite sequences',
+			arrayVal: 'Not possible',
+			iterVal: 'Native support',
+			arrayBad: true
+		},
+		{
+			dim: 'Memory usage',
+			arrayVal: 'Proportional to array size',
+			iterVal: 'Constant (O(1))',
+			arrayBad: true
+		},
+		{
+			dim: 'Random access',
+			arrayVal: 'Yes — arr[i] any time',
+			iterVal: 'No — forward only',
+			arrayBad: false
+		},
+		{
+			dim: 'Re-usability',
+			arrayVal: 'Can be iterated many times',
+			iterVal: 'Single-pass only',
+			arrayBad: false
+		},
+		{
+			dim: 'Browser support',
+			arrayVal: 'Universal',
+			iterVal: 'Node 22+ / modern browsers',
+			arrayBad: false
+		}
+	];
+</script>
+
 <div class="slide slide-8">
-	<div class="slide-heading">Using with <span class="accent">Generators</span></div>
+	<div class="slide-heading">Array Methods <span class="accent">vs</span> Iterator Helpers</div>
 	<div class="heading-bar"></div>
 
 	<div class="body">
-		<div class="left">
-			<p class="intro-text">
-				Generator functions return an iterator. Iterator helpers chain directly onto them, making
-				infinite sequences and lazy pipelines effortless.
-			</p>
-
-			<div class="steps">
-				<div class="step">
-					<div class="step-num">1</div>
-					<div class="step-text">
-						<strong>Define</strong> a generator with <code>function*</code> and <code>yield</code>
-					</div>
-				</div>
-				<div class="step">
-					<div class="step-num">2</div>
-					<div class="step-text">
-						<strong>Call</strong> the generator — it returns an iterator object
-					</div>
-				</div>
-				<div class="step">
-					<div class="step-num">3</div>
-					<div class="step-text">
-						<strong>Chain</strong> iterator helpers directly on the result
-					</div>
-				</div>
+		<div class="comparison-table">
+			<!-- Header -->
+			<div class="col-header left-header">
+				<span class="header-icon">📋</span>
+				<span>Array Methods</span>
+			</div>
+			<div class="col-header center-header">Dimension</div>
+			<div class="col-header right-header">
+				<span class="header-icon">⚡</span>
+				<span>Iterator Helpers</span>
 			</div>
 
-			<div class="compat-note">
-				<span class="compat-icon">📦</span>
-				<span>Works with any iterable via <code>Iterator.from(iterable)</code></span>
-			</div>
+			{#each rows as row}
+				<div class="cell left-cell" class:cell-bad={row.arrayBad}>
+					{row.arrayVal}
+					{#if row.arrayBad}
+						<span class="cell-icon bad">✗</span>
+					{:else}
+						<span class="cell-icon ok">✓</span>
+					{/if}
+				</div>
+				<div class="cell dim-cell">{row.dim}</div>
+				<div class="cell right-cell" class:cell-good={!row.arrayBad}>
+					{#if !row.arrayBad}
+						<span class="cell-icon ok">✓</span>
+					{:else}
+						<span class="cell-icon ok">✓</span>
+					{/if}
+					{row.iterVal}
+				</div>
+			{/each}
 		</div>
 
-		<div class="right">
-			<div class="code-label-row">
-				<span class="code-label-tag">Example — Infinite sequence with generators</span>
-			</div>
-			<pre class="code-block"><code
-					><span class="cmt">// 1. Infinite generator — never ends on its own</span>
-<span class="kw">function</span>* <span class="fn">naturals</span>(start = <span class="num">1</span
-					>) {`{`}
-  <span class="kw">while</span> (<span class="kw">true</span>) <span class="kw">yield</span
-					> start++;
-{`}`}
-<span class="cmt">// 2. Chain iterator helpers onto it</span>
-<span class="kw">const</span> firstTenEvenSquares = <span class="fn">naturals</span>()
-  .<span class="prop">filter</span>(n => n % <span class="num">2</span> === <span class="num"
-						>0</span
-					>)  <span class="cmt">// keep only even numbers</span>
-  .<span class="prop">map</span>(n => n ** <span class="num">2</span>)           <span class="cmt"
-						>// square them</span
-					>
-  .<span class="prop">take</span>(<span class="num">10</span>)                    <span class="cmt"
-						>// stop after 10</span
-					>
-  .<span class="prop">toArray</span>();
-<span class="cmt">// → [4, 16, 36, 64, 100, 144, 196, 256, 324, 400]</span>
-<span class="cmt">// 3. Iterator.from() for non-array iterables</span>
-<span class="kw">const</span> fromSet = <span class="cls">Iterator</span>.<span class="fn"
-						>from</span
-					>(<span class="kw">new</span> <span class="cls">Set</span>([<span class="num">1</span
-					>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>]))
-  .<span class="prop">filter</span>(x => x % <span class="num">2</span> !== <span class="num"
-						>0</span
-					>)
-  .<span class="prop">toArray</span>();</code
-				></pre>
-
-			<div class="highlight-box">
-				<span class="hl-icon">🔑</span>
-				<div>
-					<div class="hl-title">Key insight</div>
-					<div class="hl-text">
-						The generator produces values <em>one at a time</em>, and <code>.take(10)</code>
-						stops pulling after 10 are collected — so the infinite loop never runs forever.
-					</div>
-				</div>
-			</div>
+		<div class="takeaway">
+			<span class="takeaway-icon">💡</span>
+			<p>
+				Iterator helpers don't replace arrays — they <strong>extend</strong> how you work with sequences.
+				Use them when laziness, memory, or early termination matter.
+			</p>
 		</div>
 	</div>
 </div>
@@ -92,147 +106,141 @@
 
 	.body {
 		flex: 1;
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+	}
+
+	.comparison-table {
 		display: grid;
-		grid-template-columns: 1fr 1.6fr;
-		gap: 44px;
-		align-items: start;
-	}
-
-	.left {
-		display: flex;
-		flex-direction: column;
-		gap: 22px;
-	}
-
-	.intro-text {
-		font-size: var(--fsz-s);
-		color: #b0b0c0;
-		line-height: 1.7;
-	}
-
-	.steps {
-		display: flex;
-		flex-direction: column;
-		gap: 12px;
-	}
-
-	.step {
-		display: flex;
-		align-items: flex-start;
-		gap: 12px;
-	}
-
-	.step-num {
-		width: 26px;
-		height: 26px;
-		border-radius: 50%;
-		background: rgba(250, 198, 31, 0.15);
-		border: 1px solid rgba(250, 198, 31, 0.35);
-		color: var(--yellow);
-		font-size: var(--fsz-s);
-		font-weight: 800;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		flex-shrink: 0;
-		margin-top: 1px;
-	}
-
-	.step-text {
-		font-size: var(--fsz-s);
-		color: #b0b0c0;
-		line-height: 1.5;
-	}
-
-	.step-text strong {
-		color: var(--light);
-	}
-
-	.step-text code {
-		background: rgba(255, 255, 255, 0.06);
-		padding: 1px 6px;
-		border-radius: 4px;
-		font-size: var(--fsz-s);
-		color: var(--yellow);
-		font-family: 'Fira Code', monospace;
-	}
-
-	.compat-note {
-		display: flex;
-		align-items: center;
-		gap: 10px;
-		font-size: var(--fsz-s);
-		color: var(--gray);
-		background: rgba(255, 255, 255, 0.03);
+		grid-template-columns: 1fr 180px 1fr;
+		gap: 0;
+		border-radius: 12px;
+		overflow: hidden;
 		border: 1px solid rgba(255, 255, 255, 0.07);
-		border-radius: 8px;
-		padding: 10px 14px;
+		flex: 1;
 	}
 
-	.compat-note code {
-		color: var(--blue);
-		font-family: 'Fira Code', monospace;
+	.col-header {
+		padding: 12px 20px;
 		font-size: var(--fsz-s);
-		background: rgba(94, 202, 231, 0.08);
-		padding: 1px 5px;
-		border-radius: 3px;
-	}
-
-	.right {
-		display: flex;
-		flex-direction: column;
-		gap: 12px;
-	}
-
-	.code-label-row {
+		font-weight: 700;
+		letter-spacing: 0.07em;
+		text-transform: uppercase;
 		display: flex;
 		align-items: center;
+		gap: 8px;
 	}
 
-	.code-label-tag {
+	.left-header {
+		background: rgba(255, 107, 107, 0.08);
+		color: #ff9090;
+		border-bottom: 1px solid rgba(255, 107, 107, 0.15);
+	}
+
+	.center-header {
+		background: rgba(255, 255, 255, 0.03);
+		color: var(--gray);
+		text-align: center;
+		justify-content: center;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+		border-left: 1px solid rgba(255, 255, 255, 0.06);
+		border-right: 1px solid rgba(255, 255, 255, 0.06);
+	}
+
+	.right-header {
+		background: rgba(250, 198, 31, 0.08);
+		color: var(--yellow);
+		border-bottom: 1px solid rgba(250, 198, 31, 0.15);
+	}
+
+	.header-icon {
+		font-size: var(--fsz-m);
+	}
+
+	.cell {
+		padding: 9px 20px;
+		font-size: var(--fsz-s);
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		color: #c0c0d0;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+	}
+
+	.cell:last-child,
+	.cell:nth-last-child(2),
+	.cell:nth-last-child(3) {
+		border-bottom: none;
+	}
+
+	.left-cell {
+		background: rgba(255, 107, 107, 0.03);
+		justify-content: flex-end;
+	}
+
+	.left-cell.cell-bad {
+		color: #c0a0a0;
+	}
+
+	.dim-cell {
+		background: rgba(255, 255, 255, 0.02);
+		color: var(--gray);
 		font-size: var(--fsz-s);
 		font-weight: 600;
-		letter-spacing: 0.08em;
 		text-transform: uppercase;
-		color: var(--gray);
+		letter-spacing: 0.06em;
+		justify-content: center;
+		text-align: center;
+		border-left: 1px solid rgba(255, 255, 255, 0.04);
+		border-right: 1px solid rgba(255, 255, 255, 0.04);
 	}
 
-	.highlight-box {
+	.right-cell {
+		background: rgba(250, 198, 31, 0.03);
+	}
+
+	.right-cell.cell-good {
+		color: #c0d0b0;
+	}
+
+	.cell-icon {
+		font-size: var(--fsz-s);
+		flex-shrink: 0;
+	}
+
+	.cell-icon.bad {
+		color: #ff6b6b;
+		opacity: 0.7;
+	}
+
+	.cell-icon.ok {
+		color: var(--green);
+		opacity: 0.8;
+	}
+
+	.takeaway {
 		display: flex;
 		align-items: flex-start;
-		gap: 12px;
-		background: rgba(115, 195, 124, 0.07);
-		border: 1px solid rgba(115, 195, 124, 0.2);
+		gap: 14px;
+		background: rgba(250, 198, 31, 0.06);
+		border: 1px solid rgba(250, 198, 31, 0.2);
 		border-radius: 10px;
-		padding: 14px 16px;
+		padding: 14px 18px;
 	}
 
-	.hl-icon {
+	.takeaway-icon {
 		font-size: var(--fsz-m);
 		flex-shrink: 0;
 	}
 
-	.hl-title {
-		font-size: var(--fsz-s);
-		font-weight: 700;
-		color: var(--green);
-		text-transform: uppercase;
-		letter-spacing: 0.07em;
-		margin-bottom: 4px;
-	}
-
-	.hl-text {
+	.takeaway p {
 		font-size: var(--fsz-s);
 		color: #b0b0c0;
 		line-height: 1.6;
 	}
 
-	.hl-text code {
+	.takeaway strong {
 		color: var(--yellow);
-		font-family: 'Fira Code', monospace;
-		font-size: var(--fsz-s);
-		background: rgba(250, 198, 31, 0.08);
-		padding: 1px 5px;
-		border-radius: 3px;
 	}
 </style>

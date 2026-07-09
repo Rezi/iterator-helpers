@@ -78,10 +78,8 @@
 					{/if}
 				</div>
 				<div class="cell dim-cell">{row.dim}</div>
-				<div class="cell right-cell" class:cell-good={!row.arrayBad}>
-					{#if !row.arrayBad}
-						<span class="cell-icon ok">✓</span>
-					{:else}
+				<div class="cell right-cell" class:cell-good={row.arrayBad}>
+					{#if row.arrayBad}
 						<span class="cell-icon ok">✓</span>
 					{/if}
 					{row.iterVal}
